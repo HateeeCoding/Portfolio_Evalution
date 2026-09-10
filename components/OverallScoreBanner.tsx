@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { PortfolioSummary } from '../lib/types';
-import { RefreshCw, ArrowUpRight, AlertTriangle, ShieldCheck, Sparkles } from 'lucide-react';
+import { RefreshCw, ArrowUpRight, AlertTriangle, ShieldCheck, Sparkles, CheckCircle2 } from 'lucide-react';
 
 interface OverallScoreBannerProps {
   summary: PortfolioSummary;
@@ -23,9 +23,6 @@ export const OverallScoreBanner: React.FC<OverallScoreBannerProps> = ({
   const pbRatio = isMended ? '3.8' : '5.8';
   const betaVal = isMended ? '0.88' : '0.34';
 
-  // SVG Gauge calculations
-  // Semi-circle from 180 deg to 0 deg (radius 70, center at 100, 95)
-  // Total arc length = PI * r = 3.14159 * 70 = 219.9
   const radius = 70;
   const arcLength = Math.PI * radius;
   const progressOffset = arcLength - (arcLength * displayScore) / 100;
@@ -39,13 +36,13 @@ export const OverallScoreBanner: React.FC<OverallScoreBannerProps> = ({
             <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">
               Portfolio Value
             </span>
-            <button className="inline-flex items-center gap-1 text-[11px] font-medium text-slate-500 hover:text-slate-900 bg-slate-50 hover:bg-slate-100 px-2.5 py-1 rounded-md border border-slate-200/60 transition-all">
+            <button className="inline-flex items-center gap-1 text-[11px] font-medium text-slate-600 hover:text-slate-900 bg-slate-50 hover:bg-slate-100 px-2.5 py-1 rounded-md border border-slate-200/70 transition-all">
               <RefreshCw className="w-3 h-3 text-slate-400" />
               <span>Sync</span>
             </button>
           </div>
 
-          <div className="text-3xl font-extrabold text-slate-900 tracking-tight">
+          <div className="text-3xl font-black text-slate-900 tracking-tight">
             ₹37,69,158<span className="text-lg font-semibold text-slate-400">.10</span>
           </div>
           <span className="text-[11px] text-slate-400 font-medium block mt-1">
@@ -53,10 +50,10 @@ export const OverallScoreBanner: React.FC<OverallScoreBannerProps> = ({
           </span>
         </div>
 
-        <div className="pt-5 border-t border-slate-100 mt-5 space-y-2.5">
+        <div className="pt-4 border-t border-slate-100 mt-4 space-y-2">
           <div className="flex items-center justify-between text-xs">
             <span className="text-slate-500 font-medium">Overall P/L</span>
-            <span className="text-emerald-600 font-bold flex items-center gap-1">
+            <span className="text-emerald-600 font-bold flex items-center gap-0.5">
               <ArrowUpRight className="w-3.5 h-3.5" />
               +₹22,73,828 (152.06%)
             </span>
@@ -70,19 +67,19 @@ export const OverallScoreBanner: React.FC<OverallScoreBannerProps> = ({
           </div>
 
           <div className="flex items-center justify-between text-xs">
-            <span className="text-slate-500 font-medium">Realized / Trimmed</span>
+            <span className="text-slate-500 font-medium">Secured / Trimmed</span>
             <span className={`font-semibold ${isMended ? 'text-emerald-600' : 'text-slate-400'}`}>
-              {isMended ? '₹15,74,853 (Secured)' : '₹0.00'}
+              {isMended ? '₹15,74,853' : '₹0.00'}
             </span>
           </div>
         </div>
       </div>
 
-      {/* 2. Center Card: Clean, Modern Minimalist Score Gauge */}
+      {/* 2. Center Card: Minimalist Score Gauge */}
       <div className="lg:col-span-4 bg-white rounded-2xl border border-slate-200/80 p-6 flex flex-col justify-between items-center text-center shadow-2xs">
         <div className="w-full flex items-center justify-between mb-2">
           <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">
-            Portfolio AI Score
+            Portfolio Health Score
           </span>
           <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border ${
             isMended
@@ -93,11 +90,11 @@ export const OverallScoreBanner: React.FC<OverallScoreBannerProps> = ({
           </span>
         </div>
 
-        {/* Minimalist, Clean Arc Gauge (Zero clutter, zero needle overlap) */}
+        {/* Minimalist Arc Gauge */}
         <div className="relative w-56 h-32 flex items-end justify-center">
           <svg className="w-full h-full overflow-visible" viewBox="0 0 200 115">
             <defs>
-              <linearGradient id="modernGaugeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <linearGradient id="scoreGaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
                 <stop offset="0%" stopColor="#F43F5E" />
                 <stop offset="35%" stopColor="#F59E0B" />
                 <stop offset="70%" stopColor="#10B981" />
@@ -105,7 +102,7 @@ export const OverallScoreBanner: React.FC<OverallScoreBannerProps> = ({
               </linearGradient>
             </defs>
 
-            {/* Background Arc Track */}
+            {/* Background Track */}
             <path
               d="M 30 100 A 70 70 0 0 1 170 100"
               fill="none"
@@ -114,11 +111,11 @@ export const OverallScoreBanner: React.FC<OverallScoreBannerProps> = ({
               strokeLinecap="round"
             />
 
-            {/* Active Colored Progress Arc */}
+            {/* Active Track */}
             <path
               d="M 30 100 A 70 70 0 0 1 170 100"
               fill="none"
-              stroke="url(#modernGaugeGradient)"
+              stroke="url(#scoreGaugeGrad)"
               strokeWidth="10"
               strokeLinecap="round"
               strokeDasharray={arcLength}
@@ -126,12 +123,11 @@ export const OverallScoreBanner: React.FC<OverallScoreBannerProps> = ({
               className="transition-all duration-700 ease-out"
             />
 
-            {/* Min and Max Range Labels */}
             <text x="30" y="114" fontSize="9" fontWeight="600" fill="#94A3B8" textAnchor="middle">0</text>
             <text x="170" y="114" fontSize="9" fontWeight="600" fill="#94A3B8" textAnchor="middle">100</text>
           </svg>
 
-          {/* Clean, perfectly centered score text */}
+          {/* Centered Score text */}
           <div className="absolute inset-0 flex flex-col items-center justify-end pb-1 pointer-events-none">
             <div className="flex items-baseline gap-0.5">
               <span className="text-4xl font-black text-slate-900 tracking-tight">
@@ -139,7 +135,7 @@ export const OverallScoreBanner: React.FC<OverallScoreBannerProps> = ({
               </span>
               <span className="text-xs font-bold text-slate-400">/100</span>
             </div>
-            <span className={`text-[11px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full mt-0.5 ${
+            <span className={`text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full mt-0.5 ${
               isMended ? 'text-emerald-700 bg-emerald-50' : 'text-emerald-700 bg-emerald-50/80'
             }`}>
               {scoreLabel}
@@ -147,8 +143,8 @@ export const OverallScoreBanner: React.FC<OverallScoreBannerProps> = ({
           </div>
         </div>
 
-        {/* Submetrics row (PE, PB, Beta) */}
-        <div className="w-full grid grid-cols-3 gap-2 pt-4 border-t border-slate-100 mt-3 text-xs">
+        {/* Submetrics */}
+        <div className="w-full grid grid-cols-3 gap-2 pt-3.5 border-t border-slate-100 mt-2 text-xs">
           <div className="flex flex-col items-center">
             <span className="font-bold text-slate-900 text-sm">{peRatio}</span>
             <span className="text-[10px] font-medium text-slate-400 uppercase tracking-wider mt-0.5">
@@ -170,48 +166,63 @@ export const OverallScoreBanner: React.FC<OverallScoreBannerProps> = ({
         </div>
       </div>
 
-      {/* 3. Right Card: Diagnostic Reality & Action Trigger */}
+      {/* 3. Right Card: Diagnostic Reality & Quick Action */}
       <div className="lg:col-span-4 bg-white rounded-2xl border border-slate-200/80 p-6 flex flex-col justify-between shadow-2xs">
         <div>
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-1.5">
-              <AlertTriangle className={`w-4 h-4 ${isMended ? 'text-emerald-600' : 'text-amber-500'}`} />
+              {isMended ? (
+                <ShieldCheck className="w-4 h-4 text-emerald-600" />
+              ) : (
+                <AlertTriangle className="w-4 h-4 text-amber-500" />
+              )}
               <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">
-                {isMended ? 'Optimization Active' : 'Concentration Alert'}
+                {isMended ? 'Protection Active' : 'Key Finding'}
               </span>
             </div>
             <span className="text-[10px] font-bold text-slate-400 uppercase">
-              1-Click Advisory
+              Prescriptive Fix
             </span>
           </div>
 
-          <h3 className="text-base font-bold text-slate-900 leading-snug mb-1.5">
+          <h3 className="text-sm font-bold text-slate-900 leading-snug mb-3">
             {isMended
-              ? 'Portfolio Mended to Institutional Safe State'
-              : '97% of Total Profits Tied to 1 Stock'}
+              ? 'Capital Rebalanced: Safe Compounding Mode'
+              : '97% of Profit Driven by 1 Speculative Winner'}
           </h3>
 
-          <p className="text-xs text-slate-500 leading-relaxed">
-            {isMended
-              ? 'Midwest Gold trimmed to 18%, locking in ₹15.75L profit. Capital reallocated into Banking compounders & IT AI Baskets with zero tax.'
-              : 'Midwest Gold occupies 59.7% of your capital. A 30% correction wipes out ₹6.75 Lakhs in wealth. 8 other positions are negative.'}
-          </p>
+          {/* High-Signal Visual Chips instead of text walls */}
+          <div className="grid grid-cols-2 gap-2 mb-2">
+            <div className="p-2 rounded-lg bg-slate-50 border border-slate-100">
+              <span className="text-[10px] text-slate-400 block font-medium">Top Stock Exposure</span>
+              <span className={`text-xs font-bold ${isMended ? 'text-emerald-700' : 'text-rose-600'}`}>
+                {isMended ? '18.0% (Safe Capped)' : '59.7% (Midwest Gold)'}
+              </span>
+            </div>
+            <div className="p-2 rounded-lg bg-slate-50 border border-slate-100">
+              <span className="text-[10px] text-slate-400 block font-medium">30% Drop Exposure</span>
+              <span className={`text-xs font-bold ${isMended ? 'text-emerald-700' : 'text-rose-600'}`}>
+                {isMended ? '-₹1.70L (Absorbed)' : '-₹6.75L (High Ruin)'}
+              </span>
+            </div>
+          </div>
         </div>
 
-        <div className="pt-4 border-t border-slate-100 mt-4 space-y-2">
+        {/* Sleek Black Action Button */}
+        <div className="pt-3 border-t border-slate-100 mt-2 space-y-2">
           <button
             onClick={onScrollToMending}
-            className="w-full py-2.5 px-3 bg-[#7C3AED] hover:bg-[#6D28D9] text-white font-bold text-xs rounded-xl shadow-xs transition-all flex items-center justify-center gap-1.5"
+            className="w-full py-2.5 px-3 bg-black hover:bg-slate-800 text-white font-bold text-xs rounded-xl shadow-xs transition-all flex items-center justify-center gap-1.5"
           >
-            <Sparkles className="w-3.5 h-3.5" />
+            <Sparkles className="w-3.5 h-3.5 text-slate-300" />
             <span>{isMended ? 'View Mending Blueprint' : 'Mend This Portfolio'}</span>
           </button>
 
           <button
             onClick={onToggleMend}
-            className="w-full py-2 px-3 bg-slate-50 hover:bg-slate-100 text-slate-600 hover:text-slate-900 font-semibold text-xs rounded-xl border border-slate-200/60 transition-all text-center"
+            className="w-full py-2 px-3 bg-slate-50 hover:bg-slate-100 text-slate-700 font-semibold text-xs rounded-xl border border-slate-200/60 transition-all text-center"
           >
-            {isMended ? 'Reset to Unmended (60/100)' : 'Simulate Mended State (86/100)'}
+            {isMended ? 'Reset to Unmended (60)' : 'Simulate Mended (86)'}
           </button>
         </div>
       </div>
