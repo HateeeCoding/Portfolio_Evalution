@@ -3,11 +3,11 @@
 import React, { useState } from 'react';
 import { Sidebar } from '../components/Sidebar';
 import { Header } from '../components/Header';
+import { HoldingsSidebar } from '../components/HoldingsSidebar';
 import { OverallScoreBanner } from '../components/OverallScoreBanner';
 import { UnifiedPillarsMatrix } from '../components/UnifiedPillarsMatrix';
 import { MendingInfographics } from '../components/MendingInfographics';
 import { ClickableActionPlan, ActionItem } from '../components/ClickableActionPlan';
-import { HoldingsTable } from '../components/HoldingsTable';
 import { CURRENT_PORTFOLIO_HOLDINGS } from '../lib/portfolioData';
 import { calculatePortfolioSummary } from '../lib/scoringEngine';
 
@@ -93,12 +93,12 @@ export default function Home() {
 
   return (
     <div className="min-h-screen flex bg-[#F8FAFC]">
-      {/* 1. Left Sidebar matching SuperInvesting shell */}
+      {/* 1. App Navigation Sidebar */}
       <Sidebar />
 
-      {/* 2. Main Content Area */}
+      {/* 2. Main Page Container */}
       <div className="flex-1 flex flex-col min-w-0 overflow-x-hidden">
-        {/* Top Header matching Image 1 */}
+        {/* Top Header */}
         <Header
           currentPreset={currentPreset}
           onSelectPreset={setCurrentPreset}
@@ -108,43 +108,10 @@ export default function Home() {
           onPrint={handlePrint}
         />
 
-        {/* Page Body */}
-        <main className="flex-1 max-w-[1550px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          {/* Hero Overall Score Banner with Speedometer Gauge */}
-          <OverallScoreBanner
-            summary={summary}
-            isMended={isMended}
-            onToggleMend={() => setIsMended(!isMended)}
-            onScrollToMending={() => handleScrollToSection('mending-infographics')}
-          />
-
-          {/* Unified 6 Pillars Diagnostic Matrix (All visible together, no clumsy tabs) */}
-          <UnifiedPillarsMatrix
-            isMended={isMended}
-            onApplyAction={(key) => {
-              setIsMended(true);
-              handleScrollToSection('action-plan-section');
-            }}
-          />
-
-          {/* Combined Infographics: Before vs After Transformation */}
-          <div id="mending-infographics">
-            <MendingInfographics
-              isMended={isMended}
-              onExecuteMend={() => setIsMended(!isMended)}
-            />
-          </div>
-
-          {/* Clickable Action Items Plan with Toggles & Staged Execution */}
-          <ClickableActionPlan
-            actions={actions}
-            onToggleAction={handleToggleAction}
-            onApplyAll={handleApplyAllActions}
-            onPrint={handlePrint}
-          />
-
-          {/* My Holdings Table matching Image 1 */}
-          <HoldingsTable
+        {/* 2-Column Responsive Body */}
+        <main className="flex-1 max-w-[1600px] w-full mx-auto px-4 sm:px-6 py-6 flex flex-col lg:flex-row gap-6 items-start">
+          {/* LEFT PANEL: Holdings Sidebar (Crucial for immediate portfolio view) */}
+          <HoldingsSidebar
             holdings={CURRENT_PORTFOLIO_HOLDINGS}
             totalPortfolioValue={summary.totalValue}
             onQuickAction={(symbol, action) => {
@@ -152,16 +119,52 @@ export default function Home() {
               handleScrollToSection('action-plan-section');
             }}
           />
+
+          {/* RIGHT PANEL: Evaluation Scorecard & Actionable Mending Blueprint */}
+          <div className="flex-1 min-w-0 w-full space-y-6">
+            {/* Enlarged & Highlighted Health Score with Crisp Review Verdict */}
+            <OverallScoreBanner
+              summary={summary}
+              isMended={isMended}
+              onToggleMend={() => setIsMended(!isMended)}
+              onScrollToMending={() => handleScrollToSection('mending-infographics')}
+            />
+
+            {/* Human-Friendly 6 Diagnostic Pillars with Dual-Bar Potential Extension */}
+            <UnifiedPillarsMatrix
+              isMended={isMended}
+              onApplyAction={(key) => {
+                setIsMended(true);
+                handleScrollToSection('action-plan-section');
+              }}
+            />
+
+            {/* Combined Visual Infographics (Anatomy, Capital Flow, Crash Test) */}
+            <div id="mending-infographics">
+              <MendingInfographics
+                isMended={isMended}
+                onExecuteMend={() => setIsMended(!isMended)}
+              />
+            </div>
+
+            {/* Clickable Action Items Checklist */}
+            <ClickableActionPlan
+              actions={actions}
+              onToggleAction={handleToggleAction}
+              onApplyAll={handleApplyAllActions}
+              onPrint={handlePrint}
+            />
+          </div>
         </main>
 
-        {/* Clean Footer */}
-        <footer className="border-t border-slate-200 bg-white py-6 text-center text-xs text-slate-400">
+        {/* Clean Minimalist Footer */}
+        <footer className="border-t border-slate-200/80 bg-white py-6 text-center text-xs text-slate-400">
           <div className="max-w-7xl mx-auto px-4">
             <p className="font-semibold text-slate-700">
-              SuperInvesting AI Portfolio Evaluator & Health Engine
+              SuperInvesting Portfolio Health & Diagnostic Engine
             </p>
             <p className="mt-1 text-slate-400">
-              Institutional-grade multi-pillar risk diagnostics, concentration limits, and prescriptive order staging.
+              Transforming complex Wall Street ratios into intuitive human parameters and executable rebalancing orders.
             </p>
           </div>
         </footer>
